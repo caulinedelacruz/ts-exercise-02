@@ -1,12 +1,9 @@
 import { Transform, TransformCallback } from 'node:stream'
-
-interface Character {
-  name: string 
-}
+import { Character } from './interface.js'
 
 export default class MessageFormatter extends Transform {
-  constructor() {
-    super({ objectMode: true })
+  constructor(options?: object) {
+    super({ ...options, objectMode: true })
   }
 
   // eslint-disable-next-line no-underscore-dangle

@@ -1,30 +1,19 @@
 /* eslint-disable no-await-in-loop */
-import fetch from 'node-fetch'
+import fetch, { Response } from 'node-fetch'
+import { Character, Data } from './interface.js'
 
-interface Character {
-  name: string 
-}
 
-interface Data {
-  count: number
-  next: string
-  previous: string | null
-  results: Character[]
-}
-
-export default async function* generator(): AsyncGenerator<Character, void, unknown> {
+export async function* characterGenerator(): AsyncGenerator<Character, void, unknown> {
   let next: string | null = 'https://swapi.dev/api/people/'
 
   do {
-    const response = await fetch(next)
-    const data = await response.json() as Data
+    const response: Response = await fetch(next)
+    const data: Data = await response.json() as Data
     next = data.next
 
     // eslint-disable-next-line no-restricted-syntax
     for (const character of data.results) {
-      yield character
+      yield character as Character
     }
   } while (next)
 }
-
-
